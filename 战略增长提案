@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>战略增长提案 | RED International & AFB Global Holding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Professional Deep Red (Tailwind red-800), Black (gray-900), Gray (gray-50/600), and White, as derived from the original presentation's professional and investor-focused theme. -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive investor dashboard, not a linear slide-by-slide replica. The structure includes: 1) A Hero section with the main S$100k investment 'ask' and value prop. 2) A 'Core Value' dashboard with key metrics (reach, etc.) and a conceptual Doughnut chart (Chart.js) visualizing the 5-pillar ecosystem. 3) An interactive 'Marketing Pillars' section using JS-powered tabs for drill-down into each of the 5 components (Movie, Exhibitions, etc.). 4) A 'Summary' table and 'Contact' CTA. This structure was chosen to immediately highlight the ROI for an investor (the dashboard) and then allow non-linear, self-directed exploration of the proposal details (the tabs), which is more engaging and user-friendly than a static deck. -->
+    <!-- Visualization & Content Choices:
+        - Report Info: S$100k Investment, 360° Ecosystem. -> Goal: Hook/Inform. -> Viz/Method: Hero section with large typography (HTML/Tailwind). -> Interaction: None. -> Justification: Immediately frames the proposal for an investor.
+        - Report Info: 5 Pillars (Movie, Exhibitions, Roadshows, Seminars, Video). -> Goal: Organize/Summarize. -> Viz/Method: Doughnut Chart (Chart.js) showing 5 conceptual segments. -> Interaction: Hover tooltips. -> Justification: Visually represents the "360°" multi-part concept.
+        - Report Info: Key Metrics (100k+ visitors, 50-100 SMEs, 12 months). -> Goal: Inform. -> Viz/Method: Key Metric Cards (HTML/Tailwind). -> Interaction: None. -> Justification: Highlights key ROI numbers quickly.
+        - Report Info: Details of 5 Pillars (Slides 4-7). -> Goal: Organize/Drill-down. -> Viz/Method: JS-powered Tabbed Interface. -> Interaction: Click to toggle content visibility. -> Justification: Replaces 5 static slides with one clean, interactive module.
+        - Report Info: Summary Table (Slide 8). -> Goal: Compare. -> Viz/Method: Styled HTML Table. -> Interaction: None. -> Justification: Clear, direct presentation of summary logic.
+        - CONFIRMING: No SVG used (Unicode icons only). No Mermaid JS used. All charts via Chart.js Canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+      .chart-container { 
+        position: relative; 
+        width: 100%; 
+        max-width: 400px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        height: 300px; 
+        max-height: 350px; 
+      }
+      @media (min-width: 768px) { 
+        .chart-container { 
+          height: 350px; 
+        } 
+      }
+      html { 
+        scroll-behavior: smooth; 
+      }
+      .tab-btn.active {
+        border-color: #991b1b; /* red-800 */
+        background-color: #991b1b; /* red-800 */
+        color: white;
+      }
+      .tab-btn {
+        transition: all 0.3s ease;
+      }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-2xl font-bold text-red-800">
+                RED & AFB
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#overview" class="nav-link text-gray-700 hover:text-red-800 font-medium">提案概览</a>
+                <a href="#value" class="nav-link text-gray-700 hover:text-red-800 font-medium">核心价值</a>
+                <a href="#pillars" class="nav-link text-gray-700 hover:text-red-800 font-medium">营销支柱</a>
+                <a href="#summary" class="nav-link text-gray-700 hover:text-red-800 font-medium">投资总结</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-red-800 font-medium">联系我们</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden px-4 pt-2 pb-4 space-y-2 bg-white border-t">
+            <a href="#overview" class="nav-link block text-gray-700 hover:text-red-800">提案概览</a>
+            <a href="#value" class="nav-link block text-gray-700 hover:text-red-800">核心价值</a>
+            <a href="#pillars" class="nav-link block text-gray-700 hover:text-red-800">营销支柱</a>
+            <a href="#summary" class="nav-link block text-gray-700 hover:text-red-800">投资总结</a>
+            <a href="#contact" class="nav-link block text-gray-700 hover:text-red-800">联系我们</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto p-4 md:p-8">
+
+        <!-- Section 1: Hero / Overview -->
+        <section id="overview" class="text-center pt-16 pb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-red-800 mb-4">
+                战略增长提案
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
+                Marketing Proposal for Insurance Team
+            </h2>
+            <p class="text-lg text-gray-600 mb-12">
+                Presented by RED International & AFB Global Holding
+            </p>
+
+            <div class="bg-white p-8 md:p-12 rounded-xl shadow-2xl max-w-3xl mx-auto border border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-900 text-center mb-4">
+                    【希望】投入即增长
+                </h3>
+                <div class="text-center mb-6">
+                    <p class="text-lg text-gray-600">
+                        项目总投资额
+                    </p>
+                    <p class="text-6xl font-extrabold text-red-800 my-2">
+                        S$100,000
+                    </p>
+                </div>
+                <p class="text-xl text-center font-semibold text-gray-900 italic">
+                    我们贩卖的不是曝光，而是...
+                </p>
+                <p class="text-2xl text-center font-bold text-gray-900 bg-red-50 p-4 rounded-lg mt-4 border border-red-100">
+                    长达一年的【持续高密度客户互动】
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 2: Core Value / Dashboard -->
+        <section id="value" class="pt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                360° 营销生态系统
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="flex flex-col gap-5">
+                    <p class="text-lg text-gray-700 mb-4">
+                        这项投资将启动一个全方位的营销生态系统。我们不依赖单一渠道，而是通过五大核心支柱的协同作用，在娱乐、商业和社区等多个领域实现品牌价值的最大化。
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-5 rounded-lg shadow-lg border border-gray-100 text-center">
+                            <span class="text-4xl">🎯</span>
+                            <p class="text-xl font-bold text-red-800 mt-2">100,000+</p>
+                            <p class="text-gray-600">展会潜在触达</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-lg border border-gray-100 text-center">
+                            <span class="text-4xl">💼</span>
+                            <p class="text-xl font-bold text-red-800 mt-2">50-100</p>
+                            <p class="text-gray-600">SME 业主/专业人士</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-lg border border-gray-100 text-center">
+                            <span class="text-4xl">🗓️</span>
+                            <p class="text-xl font-bold text-red-800 mt-2">12 个月</p>
+                            <p class="text-gray-600">持续曝光周期</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-lg border border-gray-100 text-center">
+                            <span class="text-4xl">♻️</span>
+                            <p class="text-xl font-bold text-red-800 mt-2">5 大</p>
+                            <p class="text-gray-600">核心营销支柱</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-xl border border-gray-100">
+                    <p class="text-lg text-gray-700 mb-4 text-center font-medium">
+                        五大支柱协同作用
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="ecosystemChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Marketing Pillars / Tabs -->
+        <section id="pillars" class="pt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">
+                五大营销支柱详情
+            </h2>
+            <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-10">
+                这是一个多维度的营销组合，旨在通过娱乐、商业、社区、专业和数字渠道，全方位触达您的目标受众。点击下方标签，深入了解每一项权益。
+            </p>
+
+            <!-- Tab Buttons -->
+            <div class="flex flex-wrap justify-center border-b border-gray-300 mb-8">
+                <button class="tab-btn active text-lg font-medium py-3 px-5 border-b-4 border-transparent hover:border-red-800 hover:text-red-800" data-tab="tab-movie">
+                    1. 电影植入
+                </button>
+                <button class="tab-btn text-lg font-medium py-3 px-5 border-b-4 border-transparent hover:border-red-800 hover:text-red-800" data-tab="tab-exhibitions">
+                    2. 大型展会
+                </button>
+                <button class="tab-btn text-lg font-medium py-3 px-5 border-b-4 border-transparent hover:border-red-800 hover:text-red-800" data-tab="tab-roadshows">
+                    3. 社区路演
+                </button>
+                <button class="tab-btn text-lg font-medium py-3 px-5 border-b-4 border-transparent hover:border-red-800 hover:text-red-800" data-tab="tab-seminars">
+                    4. 专家研讨
+                </button>
+                <button class="tab-btn text-lg font-medium py-3 px-5 border-b-4 border-transparent hover:border-red-800 hover:text-red-800" data-tab="tab-video">
+                    5. 数字赋能
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="bg-white p-8 rounded-lg shadow-xl max-w-4xl mx-auto border border-gray-100">
+                <!-- Tab 1: Movie -->
+                <div id="tab-movie" class="tab-content">
+                    <h3 class="text-2xl font-bold text-red-800 mb-4">贺岁电影《No Horse Run》</h3>
+                    <p class="text-gray-600 mb-6">在春节黄金档期，实现数千观众的深度情感触达，将品牌形象与角色深度绑定，增强亲和力。</p>
+                    <ul class="space-y-4 list-disc list-inside text-gray-700">
+                        <li><span class="font-semibold">深度植入：</span> 参与电影，定制多达 <span class="text-xl font-bold text-red-800">5个</span> 专属金融顾问角色。</li>
+                        <li><span class="font-semibold">首映礼互动：</span> 在Gala首映礼现场设立展位，并在礼品袋中插入名片和宣传册，直接接触高价值客户。</li>
+                        <li><span class="font-semibold">独家曝光：</span> 获得 <span class="text-xl font-bold text-red-800">20对</span> 独家首映礼门票，用于团队激励或客户关系维护。</li>
+                        <li><span class="font-semibold">品牌鸣谢：</span> 团队名称将出现在电影的片尾鸣谢中，提升行业权威性。</li>
+                    </ul>
+                </div>
+                <!-- Tab 2: Exhibitions -->
+                <div id="tab-exhibitions" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-red-800 mb-4">两大核心展会 (The Great World & WorldFood Fest)</h3>
+                    <p class="text-gray-600 mb-6">在新加坡博览中心 (Singapore Expo) 锁定 <span class="text-xl font-bold text-red-800">100,000+</span> 目标人群，实现高效获客与现场转化。</p>
+                    <ul class="space-y-4 list-disc list-inside text-gray-700">
+                        <li><span class="font-semibold">展会排期：</span> 参与2026年3月的“The Great World” (3天) 和 5月的“WorldFood Fest” (4天)。</li>
+                        <li><span class="font-semibold">品牌展位：</span> 包含标准展位空间，用于品牌激活和客户互动。</li>
+                        <li><span class="font-semibold">独家舞台：</span> 获得 <span class="text-xl font-bold text-red-800">30分钟</span> 舞台时间，用于产品展示或理财讲座。</li>
+                        <li><span class="font-semibold">现场引流：</span> 每日提供50份免费礼包，吸引访客并奖励参与。</li>
+                    </ul>
+                </div>
+                <!-- Tab 3: Roadshows -->
+                <div id="tab-roadshows" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-red-800 mb-4">社区路演 (Roadshow Participation)</h3>
+                    <p class="text-gray-600 mb-6">深入高人流量的本地购物中心，触达数千名步行购物者和家庭，实现高频获客。</p>
+                    <ul class="space-y-4 list-disc list-inside text-gray-700">
+                        <li><span class="font-semibold">高频参与：</span> 2026年至少参与 <span class="text-xl font-bold text-red-800">2场</span> 路演 (每场3-7天)。</li>
+                        <li><span class="font-semibold">客流吸引：</span> 每日提供20份免费礼包以增加展位人流。</li>
+                        <li><span class="font-semibold">直接获客：</span> 宝贵的机会来收集潜在客户名单并进行互动品牌活动。</li>
+                    </ul>
+                </div>
+                <!-- Tab 4: Seminars -->
+                <div id="tab-seminars" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-red-800 mb-4">SME 研讨会 (Seminar Talk Series)</h3>
+                    <p class="text-gray-600 mb-6">强化您团队作为值得信赖的行业专家定位，直接面向高净值人群和决策者。</p>
+                    <ul class="space-y-4 list-disc list-inside text-gray-700">
+                        <li><span class="font-semibold">精准定位：</span> 至少参与 <span class="text-xl font-bold text-red-800">1场</span> 研讨会，面向 <span class="text-xl font-bold text-red-800">50-100名</span> 受邀SME业主和职场专业人士。</li>
+                        <li><span class="font-semibold">专家分享：</span> 传递关于金融规划、保护和财富管理的深度见解。</li>
+                        <li><span class="font-semibold">建立权威：</span> 将品牌可见度转化为客户的高度信任。</li>
+                    </ul>
+                </div>
+                <!-- Tab 5: Video -->
+                <div id="tab-video" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-red-800 mb-4">数字赋能 (Video Production & Media)</h3>
+                    <p class="text-gray-600 mb-6">确保全年的数字可见性，将线下活动的热度转化为持续的线上线索生成 (Online Lead Generation)。</p>
+                    <ul class="space-y-4 list-disc list-inside text-gray-700">
+                        <li><span class="font-semibold">顾问专访：</span> 多达 <span class="text-xl font-bold text-red-800">8位</span> 顶尖顾问将被邀请进行 <span class="text-xl font-bold text-red-800">4期</span> 独家视频访谈。</li>
+                        <li><span class="font-semibold">双语内容：</span> 制作2期英语和2期中文视频，扩大受众范围。</li>
+                        <li><span class="font-semibold">全渠道分发：</span> 视频将在 RED International 和 AFB Global 的媒体渠道及合作伙伴平台共享。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Summary -->
+        <section id="summary" class="pt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">
+                【合作】您的增长保障
+            </h2>
+            <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-10">
+                我们的价值主张清晰明了：通过广度、深度和持续性的结合，将您的投资转化为可衡量的市场份额和品牌忠诚度。下表总结了这一战略的核心优势。
+            </p>
+            <div class="bg-white shadow-xl rounded-lg overflow-hidden max-w-4xl mx-auto border border-gray-100">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="p-4 text-lg font-semibold text-gray-900">维度</th>
+                            <th class="p-4 text-lg font-semibold text-gray-900">我们的优势</th>
+                            <th class="p-4 text-lg font-semibold text-gray-900">投资回报 (ROI)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 text-lg font-bold text-red-800">广度 (Reach)</td>
+                            <td class="p-4 text-gray-700">电影 + 展会 + 路演</td>
+                            <td class="p-4 text-gray-700 font-medium">大众心智份额的快速抢占</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 text-lg font-bold text-red-800">深度 (Depth)</td>
+                            <td class="p-4 text-gray-700">角色植入 + 专家研讨</td>
+                            <td class="p-4 text-gray-700 font-medium">成为客户心中的金融信赖源</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 text-lg font-bold text-red-800">持续性 (Continuity)</td>
+                            <td class="p-4 text-gray-700">全年活动 + 视频内容</td>
+                            <td class="p-4 text-gray-700 font-medium">长达12个月的不间断曝光</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 5: Contact -->
+        <section id="contact" class="pt-20 pb-12 mt-16 bg-gray-900 text-white rounded-xl shadow-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">
+                立即行动，把握专属机遇
+            </h2>
+            <p class="text-lg text-gray-300 text-center mb-8">
+                联系我们进行合作注册或了解更多详情
+            </p>
+            <p class="text-5xl md:text-6xl font-extrabold text-center text-red-500 mb-10">
+                📞 +65 8282 4880
+            </p>
+            <p class="text-xl text-center text-gray-400">
+                我们期待与您的团队共同创造卓越价值。
+            </p>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-6 mt-12 border-t border-gray-200">
+        <p class="text-gray-500">© 2025 RED International & AFB Global Holding. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu on nav link click
+            document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Tabbed Interface
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab');
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === targetTab) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Chart.js Doughnut Chart
+            const ctx = document.getElementById('ecosystemChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['贺岁电影', '大型展会', '社区路演', '专家研讨', '数字赋能'],
+                    datasets: [{
+                        label: '营销生态系统',
+                        data: [25, 30, 20, 10, 15],
+                        backgroundColor: [
+                            '#7f1d1d', // red-900
+                            '#b91c1c', // red-700
+                            '#dc2626', // red-600
+                            '#ef4444', // red-500
+                            '#f87171', // red-400
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'sans-serif'
+                                },
+                                color: '#374151' // gray-700
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
